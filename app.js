@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var mongoose = require('mongoose');
 
-var indexRouter = require('./routes/index');
+var Router = require('./routes/index');
 
 var app = express();
 
@@ -12,8 +12,7 @@ const uri = 'mongodb+srv://ticket-booker:ticketBooker@ticket-information-oo1ok.m
 mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true
-})
-    .then(() => console.log('Connection to database successful'))
+}).then(() => console.log('Connection to database successful'))
     .catch(err => console.log(err));
 
 app.use(express.json());
@@ -26,7 +25,7 @@ app.set('view engine', 'ejs');
 app.enable('strict routing');
 
 
-app.use('/', indexRouter);
+app.use('/', Router);
 
 // // catch 404 and forward to error handler
 // app.use(function (req, res, next) {
