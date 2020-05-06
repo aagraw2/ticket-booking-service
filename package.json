@@ -1,0 +1,34 @@
+{
+  "name": "ticket-booking-service",
+  "version": "1.0.0",
+  "description": "server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run server",
+    "server": "node ./bin/www",
+    "dev": "nodemon ./bin/www --watch *.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aagraw2/ticket-booking-service.git"
+  },
+  "author": "Amit Agrawal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aagraw2/ticket-booking-service/issues"
+  },
+  "homepage": "https://github.com/aagraw2/ticket-booking-service#readme",
+  "dependencies": {
+    "ejs": "^3.1.2",
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "http-errors": "^1.7.3",
+    "mongodb": "^3.5.7",
+    "mongoose": "^5.9.12",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
