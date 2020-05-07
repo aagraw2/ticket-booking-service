@@ -3,7 +3,8 @@ var express = require('express');
 var path = require('path');
 var mongoose = require('mongoose');
 
-var Router = require('./routes/index');
+var commonRouter = require('./routes/common');
+var adminRouter = require('./routes/admin');
 
 var app = express();
 
@@ -25,7 +26,8 @@ app.set('view engine', 'ejs');
 app.enable('strict routing');
 
 
-app.use('/', Router);
+app.use('/', commonRouter);
+app.use('/admin', adminRouter);
 
 // // catch 404 and forward to error handler
 // app.use(function (req, res, next) {

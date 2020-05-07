@@ -4,7 +4,7 @@
   "description": "server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "npm run server",
     "server": "node ./bin/www",
     "dev": "nodemon ./bin/www --watch *.js"
@@ -22,6 +22,7 @@
   "dependencies": {
     "ejs": "^3.1.2",
     "express": "^4.17.1",
+    "express-validator": "^6.4.1",
     "http": "0.0.1-security",
     "http-errors": "^1.7.3",
     "mongodb": "^3.5.7",
@@ -30,6 +31,7 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
+    "jest": "^26.0.1",
     "nodemon": "^2.0.3"
   }
 }
