@@ -1,20 +1,11 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var mongoose = require('mongoose');
 
 var commonRouter = require('./routes/common');
 var adminRouter = require('./routes/admin');
 
 var app = express();
-
-const uri = 'mongodb+srv://ticket-booker:ticketBooker@ticket-information-oo1ok.mongodb.net/test?retryWrites=true&w=majority';
-
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => console.log('Connection to database successful'))
-    .catch(err => console.log(err));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -24,7 +15,6 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.enable('strict routing');
-
 
 app.use('/', commonRouter);
 app.use('/admin', adminRouter);

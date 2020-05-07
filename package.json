@@ -4,6 +4,9 @@
   "description": "server",
   "main": "index.js",
   "scripts": {
+    "testUser": "jest ./test/user.test.js",
+    "testTicket": "jest ./test/ticket.test.js",
+    "testCommon": "jest ./test/commonRoutes.test.js",
     "test": "jest",
     "start": "npm run server",
     "server": "node ./bin/www",
@@ -31,7 +34,14 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.1.5",
+    "chai": "^4.2.0",
     "jest": "^26.0.1",
-    "nodemon": "^2.0.3"
+    "mocha": "^7.1.2",
+    "mock": "^0.1.1",
+    "mockgoose": "^8.0.4",
+    "mongodb-memory-server": "^6.5.2",
+    "nodemon": "^2.0.3",
+    "supertest": "^4.0.2"
   }
 }
