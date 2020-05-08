@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const TicketModel = require('../models/Ticket');
 
+const dbHandler = require('./dbHandler')
 
 const testTicket = {
     ticketNumber: 20,
@@ -9,17 +10,14 @@ const testTicket = {
 
 
 describe('TesingModel Ticket', () => {
-    let connection;
+
     beforeAll(async () => {
-        connection = await mongoose.connect(global.__MONGO_URI__, { useNewUrlParser: true, useCreateIndex: true }, (err) => {
-            if (err) {
-                console.error(err);
-            }
-        })
+        await dbHandler.connect();
     });
 
     afterAll(async () => {
-        connection.close()
+        await dbHandler.clearDatabase();
+        await dbHandler.closeDatabase();
     })
 
     it('create and save Ticket successfully', async () => {

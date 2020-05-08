@@ -1,8 +1,8 @@
 var app = require('../app');
 var debug = require('debug')('server:server');
 var http = require('http');
-const db = require('./Connection');
 
+const db = require('../Connection');
 db.connect();
 
 var port = normalizePort(process.env.PORT || '5000');

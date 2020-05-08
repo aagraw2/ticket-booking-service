@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const app = require('../app');
 let request = require('supertest')
 
+const dbHandler = require('./dbHandler')
+
 const UserModel = require('../models/User');
 const TicketModel = require('../models/Ticket');
 
@@ -24,31 +26,33 @@ const testTicketOpen = {
     isBooked: false
 };
 
+let userId, TicketIdOpen, TicketIdClosed;
+
 describe('Tesing common API endpoints', () => {
-    let connection, userResponse, ticketResponseClosed, ticketResponseOpen;
+
     beforeAll(async () => {
-        connection = await mongoose.connect(global.__MONGO_URI__, { useNewUrlParser: true, useCreateIndex: true }, (err) => {
-            if (err) {
-                console.error(err);
-            }
-        })
+        await dbHandler.connect();
 
         const testUserObj = new UserModel(testUser);
-        userResponse = await testUserObj.save();
+        const userResponse = await testUserObj.save();
+        userId = userResponse._id;
 
         const testTicketClosedObj = new TicketModel(testTicketClosed);
-        testTicketClosedObj.user_id = userResponse._id;
-        ticketResponseClosed = await testTicketClosedObj.save();
+        testTicketClosedObj.user_id = userId;
+        const ticketResponseClosed = await testTicketClosedObj.save();
+        TicketIdClosed = ticketResponseClosed._id;
 
         const testTicketOpenObj = new TicketModel(testTicketOpen);
-        ticketResponseOpen = await testTicketOpenObj.save();
+        const ticketResponseOpen = await testTicketOpenObj.save();
+        TicketIdOpen = ticketResponseOpen._id;
 
-    });
 
-    afterAll(async () => {
-        connection.close()
     })
 
+    afterAll(async () => {
+        await dbHandler.clearDatabase();
+        await dbHandler.closeDatabase();
+    })
 
     it('GET /tickets/closed', async (done) => {
         const server = request.agent(app);
@@ -77,7 +81,7 @@ describe('Tesing common API endpoints', () => {
     it('GET /:ticket_id/get-status (Closed)', async (done) => {
         const server = request.agent(app);
         await server
-            .get(`/${ticketResponseClosed._id}/get-status`)
+            .get(`/${TicketIdClosed}/get-status`)
             .then((res) => {
                 const body = res.body;
                 expect(body.isBooked).toBe(true);
@@ -89,7 +93,7 @@ describe('Tesing common API endpoints', () => {
     it('GET /:ticket_id/get-status (Open)', async (done) => {
         const server = request.agent(app);
         await server
-            .get(`/${ticketResponseOpen._id}/get-status`)
+            .get(`/${TicketIdOpen}/get-status`)
             .then((res) => {
                 const body = res.body;
                 expect(body.isBooked).toBe(false);
@@ -101,10 +105,10 @@ describe('Tesing common API endpoints', () => {
     it('GET /:ticket_id/user (Closed)', async (done) => {
         const server = request.agent(app);
         await server
-            .get(`/${ticketResponseClosed._id}/get-user`)
+            .get(`/${TicketIdClosed}/get-user`)
             .then((res) => {
                 const body = res.body;
-                expect(body._id).toEqual(userResponse._id.toString());
+                expect(body._id).toEqual(userId.toString());
                 done();
             })
             .catch(done);
@@ -113,7 +117,7 @@ describe('Tesing common API endpoints', () => {
     it('GET /:ticket_id/user (Open)', async (done) => {
         const server = request.agent(app);
         await server
-            .get(`/${ticketResponseOpen._id}/get-user`)
+            .get(`/${TicketIdOpen}/get-user`)
             .then((res) => {
                 const body = res.body;
                 expect(body).toEqual({})

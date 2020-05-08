@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const UserModel = require('../models/User');
 
+const dbHandler = require('./dbHandler')
+
 const testUser = {
     firstName: 'Amit',
     lastName: 'Ag',
@@ -11,17 +13,14 @@ const testUser = {
 };
 
 describe('TesingModel User', () => {
-    let connection;
+
     beforeAll(async () => {
-        connection = await mongoose.connect(global.__MONGO_URI__, { useNewUrlParser: true, useCreateIndex: true }, (err) => {
-            if (err) {
-                console.error(err);
-            }
-        })
+        await dbHandler.connect();
     });
 
     afterAll(async () => {
-        connection.close()
+        await dbHandler.clearDatabase();
+        await dbHandler.closeDatabase();
     })
 
     it('create and save user successfully', async () => {
