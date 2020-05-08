@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const UserModel = require('../models/User');
 
-const dbHandler = require('./dbHandler')
+const dbHandler = require('./dbHandler');
 
 const testUser = {
     firstName: 'Amit',
@@ -9,11 +9,10 @@ const testUser = {
     age: 24,
     gender: 'Male',
     mobileNumber: '+91-1234567890',
-    emailId: 'a@b.com'
+    emailId: 'a@b.com',
 };
 
 describe('TesingModel User', () => {
-
     beforeAll(async () => {
         await dbHandler.connect();
     });
@@ -21,7 +20,7 @@ describe('TesingModel User', () => {
     afterAll(async () => {
         await dbHandler.clearDatabase();
         await dbHandler.closeDatabase();
-    })
+    });
 
     it('create and save user successfully', async () => {
         const testUserObj = new UserModel(testUser);
@@ -29,7 +28,6 @@ describe('TesingModel User', () => {
 
         expect(response._id).toBeDefined();
         expect(response.firstName).toBe('Amit');
-
     });
 
     it('Should insert user with unique mobileNumber and emailId', async () => {
@@ -37,9 +35,8 @@ describe('TesingModel User', () => {
         try {
             await testUserObj.save();
         } catch (e) {
-            expect(e.name).toBe('ValidationError')
+            expect(e.name).toBe('ValidationError');
         }
-
     });
 
     it('Should contain firstName', async () => {
@@ -48,9 +45,8 @@ describe('TesingModel User', () => {
         try {
             await testUserObj.save();
         } catch (e) {
-            expect(e.name).toBe('ValidationError')
+            expect(e.name).toBe('ValidationError');
         }
-
     });
 
     it('Should have gender as Male/Female/Others only', async () => {
@@ -59,8 +55,7 @@ describe('TesingModel User', () => {
         try {
             await testUserObj.save();
         } catch (e) {
-            expect(e.name).toBe('ValidationError')
+            expect(e.name).toBe('ValidationError');
         }
     });
-
-})
+});

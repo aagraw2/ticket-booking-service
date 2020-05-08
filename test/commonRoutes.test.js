@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
+const request = require('supertest');
 const app = require('../app');
-let request = require('supertest')
 
-const dbHandler = require('./dbHandler')
+const dbHandler = require('./dbHandler');
 
 const UserModel = require('../models/User');
 const TicketModel = require('../models/Ticket');
@@ -13,23 +13,23 @@ const testUser = {
     age: 24,
     gender: 'Male',
     mobileNumber: '+91-1234567890',
-    emailId: 'a@b.com'
+    emailId: 'a@b.com',
 };
 
 const testTicketClosed = {
     ticketNumber: 20,
-    isBooked: true
+    isBooked: true,
 };
 
 const testTicketOpen = {
     ticketNumber: 21,
-    isBooked: false
+    isBooked: false,
 };
 
-let userId, TicketIdOpen, TicketIdClosed;
+let userId; let TicketIdOpen; let
+    TicketIdClosed;
 
 describe('Tesing common API endpoints', () => {
-
     beforeAll(async () => {
         await dbHandler.connect();
 
@@ -45,21 +45,19 @@ describe('Tesing common API endpoints', () => {
         const testTicketOpenObj = new TicketModel(testTicketOpen);
         const ticketResponseOpen = await testTicketOpenObj.save();
         TicketIdOpen = ticketResponseOpen._id;
-
-
-    })
+    });
 
     afterAll(async () => {
         await dbHandler.clearDatabase();
         await dbHandler.closeDatabase();
-    })
+    });
 
     it('GET /tickets/closed', async (done) => {
         const server = request.agent(app);
         await server
             .get('/tickets/closed')
             .then((res) => {
-                const body = res.body;
+                const { body } = res;
                 expect(body.count).toBe(1);
                 done();
             })
@@ -71,7 +69,7 @@ describe('Tesing common API endpoints', () => {
         await server
             .get('/tickets/closed')
             .then((res) => {
-                const body = res.body;
+                const { body } = res;
                 expect(body.count).toBe(1);
                 done();
             })
@@ -83,7 +81,7 @@ describe('Tesing common API endpoints', () => {
         await server
             .get(`/${TicketIdClosed}/get-status`)
             .then((res) => {
-                const body = res.body;
+                const { body } = res;
                 expect(body.isBooked).toBe(true);
                 done();
             })
@@ -95,7 +93,7 @@ describe('Tesing common API endpoints', () => {
         await server
             .get(`/${TicketIdOpen}/get-status`)
             .then((res) => {
-                const body = res.body;
+                const { body } = res;
                 expect(body.isBooked).toBe(false);
                 done();
             })
@@ -107,7 +105,7 @@ describe('Tesing common API endpoints', () => {
         await server
             .get(`/${TicketIdClosed}/get-user`)
             .then((res) => {
-                const body = res.body;
+                const { body } = res;
                 expect(body._id).toEqual(userId.toString());
                 done();
             })
@@ -119,10 +117,10 @@ describe('Tesing common API endpoints', () => {
         await server
             .get(`/${TicketIdOpen}/get-user`)
             .then((res) => {
-                const body = res.body;
-                expect(body).toEqual({})
+                const { body } = res;
+                expect(body).toEqual({});
                 done();
             })
             .catch(done);
     });
-})
+});

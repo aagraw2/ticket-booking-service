@@ -1,16 +1,15 @@
 const mongoose = require('mongoose');
 const TicketModel = require('../models/Ticket');
 
-const dbHandler = require('./dbHandler')
+const dbHandler = require('./dbHandler');
 
 const testTicket = {
     ticketNumber: 20,
-    isBooked: true
+    isBooked: true,
 };
 
 
 describe('TesingModel Ticket', () => {
-
     beforeAll(async () => {
         await dbHandler.connect();
     });
@@ -18,7 +17,7 @@ describe('TesingModel Ticket', () => {
     afterAll(async () => {
         await dbHandler.clearDatabase();
         await dbHandler.closeDatabase();
-    })
+    });
 
     it('create and save Ticket successfully', async () => {
         const testTicketObj = new TicketModel(testTicket);
@@ -26,7 +25,6 @@ describe('TesingModel Ticket', () => {
 
         expect(response._id).toBeDefined();
         expect(response.ticketNumber).toBe(20);
-
     });
 
     it('should have ticket number less than 40', async () => {
@@ -35,9 +33,7 @@ describe('TesingModel Ticket', () => {
         try {
             await testTicketObj.save();
         } catch (e) {
-            expect(e.name).toBe('ValidationError')
+            expect(e.name).toBe('ValidationError');
         }
-
     });
-
-})
+});

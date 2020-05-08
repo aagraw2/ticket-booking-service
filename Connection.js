@@ -6,14 +6,14 @@ const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    dbName: 'prod'
-}
+    dbName: 'prod',
+};
 
 function connect() {
     mongoose.connect(DB_URI, options)
         .then((res, err) => {
             if (err) return reject(err);
-            console.log(`Connection to database (${options.dbName}) established successfully`)
+            console.log(`Connection to database (${options.dbName}) established successfully`);
             return res;
         });
 }
