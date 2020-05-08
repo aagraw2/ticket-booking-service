@@ -16,16 +16,14 @@ router.post('/create-empty-ticket', (req, res, next) => {
     AdminValidation.ApiKeyValidation(ApiKey)
         .then((data) => {
             const ticket = new Ticket({ ticketNumber, user_id: null });
-
-            ticket.save()
-                .then((response) => res.status(200).json(response))
-                .catch((err) => res.status(400).json(err));
+            return ticket.save();
         })
+        .then((response) => res.status(200).json(response))
         .catch((err) => res.status(400).json(err));
 });
 
 // Update the ticket status (open/close + adding user details)
-router.put('/update/:ticker_id', (req, res, next) => {
+router.put('/update/:ticket_id', (req, res, next) => {
     const { person, isBooked } = req.body;
 
     const ApiKey = req.get('api_key');
@@ -33,48 +31,46 @@ router.put('/update/:ticker_id', (req, res, next) => {
         .then((data) => {
             const { ticket_id } = req.params;
 
-            if (!isBooked) {
-                Ticket.findById(ticket_id)
-                    .then((ticket) => {
-                        TicketStatusHandler.setTicketOpen(ticket);
-                    })
-                    .catch((err) => res.status(400).json(err));
-            }
-            if (isBooked && person != null) {
-                Ticket.findById(ticket_id)
-                    .then((ticket) => {
-                        TicketStatusHandler.setTicketClosed(ticket, person);
-                    })
-                    .catch(res.status(400).json(err));
-            }
+            Ticket.findById(ticket_id)
+                .then((ticket) => {
+                    if (ticket == null) {
+                        throw new Error('Error: Ticket not found');
+                    }
+                    if (!isBooked) {
+                        return TicketStatusHandler.setTicketOpen(ticket);
+                    }
+                    if (isBooked && person != null) {
+                        return TicketStatusHandler.setTicketClosed(ticket, person);
+                    }
+                    return 'invalid Request';
+                })
+                .then((response) => res.status(200).json({ message: 'Ticket updated successfully' }))
+                .catch((err) => res.status(400).json(err.message));
         })
         .catch((err) => res.status(400).json(err));
 });
 
 // Additional API for admin to reset the server (opens up all the tickets)
-router.post('/reset', (req, res, next) => {
+router.put('/reset', (req, res, next) => {
     const ApiKey = req.get('api_key');
     AdminValidation.ApiKeyValidation(ApiKey)
-        .then((data) => {
-            Ticket.find()
-                .then((tickets) => new Promise((resolve, reject) => {
-                    const allPromiseTickets = tickets.map(
-                        (ticket) => TicketStatusHandler.setTicketOpen(ticket),
-                    );
-                    Promise.all(allPromiseTickets).then((allResolvedTickets) => {
-                        resolve(allResolvedTickets);
-                    }).catch((error) => {
-                        reject(error);
-                    });
-                }))
-                .then((response) => {
-                    res.status(200).json({ message: 'Reset operation successful' });
-                })
-                .catch((err) => {
-                    res.status(400).json({ err: err.message });
-                });
+        .then((data) => Ticket.find())
+        .then((tickets) => new Promise((resolve, reject) => {
+            const allPromiseTickets = tickets.map(
+                (ticket) => TicketStatusHandler.setTicketOpen(ticket),
+            );
+            Promise.all(allPromiseTickets).then((allResolvedTickets) => {
+                resolve(allResolvedTickets);
+            }).catch((error) => {
+                reject(error);
+            });
+        }))
+        .then((response) => {
+            res.status(200).json({ message: 'Reset operation successful' });
         })
-        .catch((err) => res.status(400).json(err));
+        .catch((err) => {
+            res.status(400).json({ err: err.message });
+        });
 });
 
 module.exports = router;

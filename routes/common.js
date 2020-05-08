@@ -10,15 +10,19 @@ const Ticket = require('../models/Ticket');
 // View Ticket Status
 router.get('/:ticket_id/get-status', (req, res, next) => {
     const { ticket_id } = req.params;
+
     Ticket.findById(ticket_id)
         .then((ticket) => {
+            if (ticket == null) {
+                throw new Error('Error: Ticket not found');
+            }
             const response = {
                 ticketId: ticket._id,
                 isBooked: ticket.isBooked,
             };
             res.status(200).send(response);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => res.status(400).json(err.message));
 });
 
 // View all closed tickets
@@ -52,11 +56,13 @@ router.get('/:ticket_id/get-user', (req, res, next) => {
     const { ticket_id } = req.params;
     Ticket.findById(ticket_id)
         .then((ticket) => {
-            User.findById(ticket.user_id)
-                .then((user) => res.status(200).send(user))
-                .catch((err) => res.status(400).json(err));
+            if (ticket == null) {
+                throw new Error('Error: Ticket not found');
+            }
+            return User.findById(ticket.user_id);
         })
-        .catch((err) => res.status(400).json(err));
+        .then((user) => res.status(200).send(user))
+        .catch((err) => res.status(400).json(err.message));
 });
 
 module.exports = router;

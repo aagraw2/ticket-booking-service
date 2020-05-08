@@ -10,10 +10,15 @@ module.exports = {
             .then((data) => {
                 console.log(`Booking status set to false for Ticket: ${ticket._id}`);
                 if (user_id != null) {
-                    User.remove({ _id: user_id })
-                        .then((user) => console.log(`User with id: ${user_id} removed successfully`));
+                    User.deleteOne({ _id: user_id })
+                        .then((user) => {
+                            console.log(`User with id: ${user_id} removed successfully`);
+                            return user;
+                        });
                 }
-                return data;
+            })
+            .catch((err) => {
+                throw err;
             });
     },
     setTicketClosed(ticket, person) {
@@ -23,15 +28,16 @@ module.exports = {
             .then((data) => {
                 ticket.user_id = user._id;
                 ticket.isBooked = true;
-                return ticket.save()
-                    .then((response) => {
-                        console.log(`Ticket with id ${ticket.id} updated`);
-                        return response;
-                    })
-                    .catch((err) => {
-                        User.findOneAndDelete({ _id: user._id });
-                        throw err;
-                    });
+                return ticket.save();
+            })
+            .then((response) => {
+                console.log(`Ticket with id ${ticket.id} updated`);
+                return response;
+            })
+            .catch((err) => {
+                User.findOneAndDelete({ _id: user._id });
+                throw err;
             });
     },
+
 };

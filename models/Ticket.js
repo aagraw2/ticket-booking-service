@@ -15,7 +15,7 @@ const ticketSchema = mongoose.Schema({
 	},
 	isBooked: {
 		type: Boolean,
-		default: true,
+		default: false,
 	},
 });
 
