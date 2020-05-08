@@ -9,7 +9,7 @@ module.exports = {
         return ticket.save()
             .then(data => {
                 console.log(`Booking status set to false for Ticket: ${ticket._id}`)
-                User.remove({ _id: user_id })
+                if (user_id != null) User.remove({ _id: user_id })
                     .then(user => console.log(`User with id: ${user_id} removed successfully`))
                 return data;
             })

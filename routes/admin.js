@@ -73,11 +73,9 @@ router.post('/reset', function (req, res, next) {
                     })
                 })
                 .then(data => {
-                    console.log("data: ", data)
                     res.status(200).json({ message: "Reset operation successful" })
                 })
                 .catch(err => {
-                    console.log('error: ', err.message)
                     res.status(400).json({ err: err.message })
                 })
         })
