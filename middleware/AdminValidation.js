@@ -10,7 +10,6 @@ module.exports = {
     if (authResponse.length > 0) {
       return true;
     }
-
     throw new Error('Invalid Api Key');
   },
 };

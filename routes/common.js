@@ -14,7 +14,7 @@ router.get('/:ticket_id/get-status', (req, res, next) => {
     Ticket.findById(ticket_id)
         .then((ticket) => {
             if (ticket == null) {
-                throw new Error('Error: Ticket not found');
+                throw new Error('Ticket not found');
             }
             const response = {
                 ticketId: ticket._id,
@@ -22,7 +22,7 @@ router.get('/:ticket_id/get-status', (req, res, next) => {
             };
             res.status(200).send(response);
         })
-        .catch((err) => res.status(400).json(err.message));
+        .catch((err) => res.status(400).json({ err: err.message }));
 });
 
 // View all closed tickets
@@ -57,12 +57,15 @@ router.get('/:ticket_id/get-user', (req, res, next) => {
     Ticket.findById(ticket_id)
         .then((ticket) => {
             if (ticket == null) {
-                throw new Error('Error: Ticket not found');
+                throw new Error('Ticket not found');
+            }
+            if (ticket.user_id == null) {
+                throw new Error('User not found. Ticket is open.');
             }
             return User.findById(ticket.user_id);
         })
         .then((user) => res.status(200).send(user))
-        .catch((err) => res.status(400).json(err.message));
+        .catch((err) => res.status(400).json({ err: err.message }));
 });
 
 module.exports = router;

@@ -19,7 +19,7 @@ router.post('/create-empty-ticket', (req, res, next) => {
             return ticket.save();
         })
         .then((response) => res.status(200).json(response))
-        .catch((err) => res.status(400).json(err));
+        .catch((err) => res.status(400).json({ err: err.message }));
 });
 
 // Update the ticket status (open/close + adding user details)
@@ -48,9 +48,9 @@ router.put('/update/:ticket_id', (req, res, next) => {
                     return 'invalid Request';
                 })
                 .then((response) => res.status(200).json({ message: 'Ticket updated successfully' }))
-                .catch((err) => res.status(400).json(err.message));
+                .catch((err) => res.status(400).json({ err: err.message }));
         })
-        .catch((err) => res.status(400).json(err));
+        .catch((err) => res.status(400).json({ err: err.message }));
 });
 
 // Additional API for admin to reset the server (opens up all the tickets)
