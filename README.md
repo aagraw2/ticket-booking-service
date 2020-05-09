@@ -28,12 +28,12 @@ Header: **api_key** required\
 ##**PUT /admin/update/:ticket_id**\
 Params: **ticket_id** required\
 Body: required\
-* **isBooked** : boolean required (true for closing/ false for opening)\
-* **person** : Object required if isBooked=true\
-  - firstName : String required\
-  - lastName : String optional\
-  - age : Number(>0) optional\
-  - gender : String (only Male/Female/Others accepted) optional\
-  - mobileNumber : String optional (should be unique)\
-  - emailId : String optional (should be unique)\
+* **isBooked** : boolean required (true for closing/ false for opening)
+* **person** : Object required if isBooked=true
+  - firstName : String required
+  - lastName : String optional
+  - age : Number(>0) optional
+  - gender : String (only Male/Female/Others accepted) optional
+  - mobileNumber : String optional (should be unique)
+  - emailId : String optional (should be unique)
   - Header: **api_key** required
