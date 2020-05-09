@@ -1,13 +1,16 @@
+const Auth = require('../models/Auth');
+
 module.exports = {
-  ApiKeyValidation(key) {
-    return new Promise((resolve, reject) => {
-      if (key == null) {
-        reject(new Error('Missing Api Key'));
-      } else if (key === 'test') {
-        resolve();
-      } else {
-        reject(new Error('Invalid Api Key'));
-      }
-    });
+  async ApiKeyValidation(key) {
+    if (key == null) {
+      throw new Error('Missing Api Key');
+    }
+    const authResponse = await Auth.find({ apiKey: key });
+
+    if (authResponse.length > 0) {
+      return true;
+    }
+
+    throw new Error('Invalid Api Key');
   },
 };
