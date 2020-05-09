@@ -21,23 +21,24 @@ module.exports = {
                 throw err;
             });
     },
-    setTicketClosed(ticket, person) {
+    async setTicketClosed(ticket, person) {
         const user = new User(person);
-
-        return user.save()
-            .then((data) => {
-                ticket.user_id = user._id;
-                ticket.isBooked = true;
-                return ticket.save();
-            })
-            .then((response) => {
-                console.log(`Ticket with id ${ticket.id} updated`);
-                return response;
-            })
-            .catch((err) => {
-                User.findOneAndDelete({ _id: user._id });
-                throw err;
-            });
+        const prevUser = ticket.user_id;
+        if (prevUser != null) {
+            await User.deleteOne({ _id: prevUser });
+            console.log(`Deleted user with id ${prevUser}`);
+        }
+        try {
+            const data = await user.save();
+            ticket.user_id = user._id;
+            ticket.isBooked = true;
+            const response = ticket.save();
+            console.log(`Ticket with id ${ticket.id} updated`);
+            return response;
+        } catch (err) {
+            User.findOneAndDelete({ _id: user._id });
+            throw err;
+        }
     },
 
 };

@@ -36,6 +36,9 @@ router.put('/update/:ticket_id', (req, res, next) => {
                     if (ticket == null) {
                         throw new Error('Error: Ticket not found');
                     }
+                    return ticket;
+                })
+                .then((ticket) => {
                     if (!isBooked) {
                         return TicketStatusHandler.setTicketOpen(ticket);
                     }
