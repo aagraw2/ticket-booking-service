@@ -24,6 +24,7 @@ module.exports = {
     async setTicketClosed(ticket, person) {
         const user = new User(person);
         const prevUser = ticket.user_id;
+        let response;
         if (prevUser != null) {
             await User.deleteOne({ _id: prevUser });
             console.log(`Deleted user with id ${prevUser}`);
@@ -32,13 +33,12 @@ module.exports = {
             const data = await user.save();
             ticket.user_id = user._id;
             ticket.isBooked = true;
-            const response = ticket.save();
+            response = ticket.save();
             console.log(`Ticket with id ${ticket.id} updated`);
-            return response;
         } catch (err) {
             User.findOneAndDelete({ _id: user._id });
             throw err;
         }
+        return response;
     },
-
 };

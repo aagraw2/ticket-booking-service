@@ -26,8 +26,9 @@ const testTicketOpen = {
     isBooked: false,
 };
 
-let userId; let TicketIdOpen; let
-    TicketIdClosed;
+let userId;
+let TicketIdOpen;
+let TicketIdClosed;
 
 describe('Tesing common API endpoints', () => {
     beforeAll(async () => {
@@ -116,9 +117,8 @@ describe('Tesing common API endpoints', () => {
         const server = request.agent(app);
         await server
             .get(`/${TicketIdOpen}/get-user`)
+            .expect(400)
             .then((res) => {
-                const { body } = res;
-                expect(body).toEqual({});
                 done();
             })
             .catch(done);
