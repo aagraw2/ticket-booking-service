@@ -1,6 +1,7 @@
 const debug = require('debug')('server:server');
 const http = require('http');
 const app = require('./app');
+require('dotenv').config();
 
 const db = require('./Connection');
 

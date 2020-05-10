@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const DB_URI = 'mongodb+srv://ticket-booker:ticketBooker@ticket-information-oo1ok.mongodb.net/test?retryWrites=true&w=majority';
+const DB_URI = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@ticket-information-oo1ok.mongodb.net/test?retryWrites=true&w=majority`;
 
 const options = {
     useNewUrlParser: true,
