@@ -6,7 +6,7 @@ const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    dbName: 'prod',
+    dbName: process.env.MONGODB_DBNAME,
 };
 
 function connect() {
