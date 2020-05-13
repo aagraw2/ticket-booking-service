@@ -1,33 +1,33 @@
 # Ticket booking service
 
-##**GET /tickets/open**\
+##**GET /tickets/open** : Returns all open tickets\
 Params: not required\
 Body: not required\
 Header: not required\
 \
-##**GET /tickets/closed**\
+##**GET /tickets/closed**  : Returns all closed tickets\
 Params: not required\
 Body: not required\
 Header: not required\
 \
-##**GET /:ticket_id/get-user**\
+##**GET /:ticket_id/get-user**  : Returns user details of ticket with id=ticket_id\
 Params: **ticket_id** required\
 Body: not required\
 Header: not required\
 \
-##**GET /:ticket_id/get-status**\
+##**GET /:ticket_id/get-status** : Returns booking status of ticket with id=ticket_id\
 Params: **ticket_id** required\
 Body: not required\
 Header: not required\
 \
-##**PUT /admin/reset**\
+##**PUT /admin/reset** : Reset and open up all tickets\
 Params: not required\
 Body: not required\
 Header: **api_key** required\
 \
-##**PUT /admin/update/:ticket_id**\
+##**PUT /admin/update/:ticket_id** : Update the ticket status (open/close + adding user details)\
 Params: **ticket_id** required\
-Body: required\
+Body: required
 * **isBooked** : boolean required (true for closing/ false for opening)
 * **person** : Object required if isBooked=true
   - firstName : String required
