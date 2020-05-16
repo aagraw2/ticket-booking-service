@@ -28,6 +28,7 @@
     "express-validator": "^6.4.1",
     "http": "0.0.1-security",
     "http-errors": "^1.7.3",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.12",
     "mongoose-unique-validator": "^2.0.3",

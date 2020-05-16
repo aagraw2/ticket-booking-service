@@ -4,6 +4,7 @@ const path = require('path');
 
 const commonRouter = require('./routes/common');
 const adminRouter = require('./routes/admin');
+const loginRouter = require('./routes/login');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.enable('strict routing');
 
 app.use('/', commonRouter);
 app.use('/admin', adminRouter);
+app.use('/login', loginRouter);
 
 // // catch 404 and forward to error handler
 // app.use((req, res, next) => {

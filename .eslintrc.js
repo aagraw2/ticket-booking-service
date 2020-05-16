@@ -13,6 +13,7 @@ module.exports = {
         "no-await-in-loop": 0,
         "no-restricted-syntax": 0,
         "guard-for-in": 0,
-        "no-restricted-globals": 0
+        "no-restricted-globals": 0,
+        'consistent-return': 0
     }
 };
