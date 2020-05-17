@@ -1,11 +1,18 @@
 # Ticket booking service
 
-##**GET /login** : Login and get jwt token\
+##**POST /login** : Login and get jwt token\
 Params: not required\
 Header: not required\
 Body: required
 * **username** : String required
 * **password** : String required
+
+##**POST /login/refresh-token** : refresh authorization token\
+Params: not required\
+Header: not required\
+Body: required
+* **username** : String required
+* **refreshToken** : String required (obtained from POST /login request)
 
 ##**GET /tickets/open** : Returns all open tickets\
 Params: not required\
@@ -30,11 +37,11 @@ Header: not required\
 ##**PUT /admin/reset** : Reset and open up all tickets\
 Params: not required\
 Body: not required\
-Header: **Authorization** required  (Bearer token from login request)\
+Header: **Authorization** required  (Bearer token from POST /login request)\
 \
 ##**PUT /admin/update/:ticket_id** : Update the ticket status (open/close + adding user details)\
 Params: **ticket_id** required\
-Header: **Authorization** required (Bearer token from login request)\
+Header: **Authorization** required (Bearer token from POST /login request)\
 Body: required
 * **isBooked** : boolean required (true for closing/ false for opening)
 * **person** : Object required if isBooked=true
