@@ -6,7 +6,7 @@ module.exports = {
 
         if (token) {
             if (token.startsWith('Bearer')) {
-                token = token.slice(7, token.length);
+                token = token.slice(7, token.length).trim();
             }
             jwt.verify(token, process.env.SECRET, (err, decoded) => {
                 if (err) {

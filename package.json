@@ -32,7 +32,8 @@
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.12",
     "mongoose-unique-validator": "^2.0.3",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "redis": "^3.0.2"
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.1.5",
